@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001"
+ xmlns:xmi="http://www.omg.org/spec/XMI/20131001"
+ xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <uml:Model xmi:id="CreditCardProcessingModel" name="Credit Card Processing System">
+
+    <packagedElement xmi:type="uml:Actor" xmi:id="Cardholder" name="Cardholder"/>
+    <packagedElement xmi:type="uml:Actor" xmi:id="Cashier" name="Cashier"/>
+    <packagedElement xmi:type="uml:Actor" xmi:id="Bank" name="Issuing Bank / Central Authorization System"/>
+    <packagedElement xmi:type="uml:Actor" xmi:id="Inventory" name="Inventory System"/>
+
+    <packagedElement xmi:type="uml:UseCase" xmi:id="UC_Purchase" name="Purchase Items"/>
+    <packagedElement xmi:type="uml:UseCase" xmi:id="UC_PresentCard" name="Present Credit Card"/>
+    <packagedElement xmi:type="uml:UseCase" xmi:id="UC_EnterDetails" name="Enter Card Details"/>
+    <packagedElement xmi:type="uml:UseCase" xmi:id="UC_VerifyBill" name="Verify Bill"/>
+    <packagedElement xmi:type="uml:UseCase" xmi:id="UC_Authorize" name="Authorize Transaction"/>
+    <packagedElement xmi:type="uml:UseCase" xmi:id="UC_Pay" name="Pay Bill"/>
+    <packagedElement xmi:type="uml:UseCase" xmi:id="UC_Deliver" name="Deliver Items"/>
+    <packagedElement xmi:type="uml:UseCase" xmi:id="UC_Decline" name="Reject Transaction"/>
+
+    <packagedElement xmi:type="uml:Association" xmi:id="A1" name="Cardholder makes purchase">
+      <memberEnd xmi:idref="A1e1"/><memberEnd xmi:idref="A1e2"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Extension" xmi:id="A1e1" name="cardholder" type="Cardholder" association="A1"/>
+    <packagedElement xmi:type="uml:Extension" xmi:id="A1e2" name="purchase" type="UC_Purchase" association="A1"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="A2" name="Cashier handles card">
+      <memberEnd xmi:idref="A2e1"/><memberEnd xmi:idref="A2e2"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Extension" xmi:id="A2e1" name="cashier" type="Cashier" association="A2"/>
+    <packagedElement xmi:type="uml:Extension" xmi:id="A2e2" name="presentCard" type="UC_PresentCard" association="A2"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="A3"><memberEnd xmi:idref="A3e1"/><memberEnd xmi:idref="A3e2"/></packagedElement>
+    <packagedElement xmi:type="uml:Extension" xmi:id="A3e1" name="cashier" type="Cashier" association="A3"/>
+    <packagedElement xmi:type="uml:Extension" xmi:id="A3e2" name="verify" type="UC_VerifyBill" association="A3"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="A4"><memberEnd xmi:idref="A4e1"/><memberEnd xmi:idref="A4e2"/></packagedElement>
+    <packagedElement xmi:type="uml:Extension" xmi:id="A4e1" name="centralSystem" type="Bank" association="A4"/>
+    <packagedElement xmi:type="uml:Extension" xmi:id="A4e2" name="authorize" type="UC_Authorize" association="A4"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="A5"><memberEnd xmi:idref="A5e1"/><memberEnd xmi:idref="A5e2"/></packagedElement>
+    <packagedElement xmi:type="uml:Extension" xmi:id="A5e1" name="cardholder" type="Cardholder" association="A5"/>
+    <packagedElement xmi:type="uml:Extension" xmi:id="A5e2" name="deliver" type="UC_Deliver" association="A5"/>
+
+    <packagedElement xmi:type="uml:Class" xmi:id="Customer" name="Cardholder">
+      <ownedAttribute xmi:id="custId" name="cardholderId" type="String"/>
+      <ownedAttribute xmi:id="custName" name="name" type="String"/>
+      <ownedAttribute xmi:id="custAddress" name="address" type="String"/>
+      <ownedOperation xmi:id="selectItems" name="selectItems"/>
+      <ownedOperation xmi:id="presentCardOp" name="presentCard"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="CreditCard" name="CreditCard">
+      <ownedAttribute xmi:id="cardNo" name="cardNumber" type="String"/>
+      <ownedAttribute xmi:id="expiry" name="expiryDate" type="String"/>
+      <ownedAttribute xmi:id="holderName" name="holderName" type="String"/>
+      <ownedAttribute xmi:id="cardStatus" name="status" type="String"/>
+      <ownedOperation xmi:id="validateCard" name="validateCard"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="CashierClass" name="Cashier">
+      <ownedAttribute xmi:id="cashierId" name="cashierId" type="String"/>
+      <ownedAttribute xmi:id="cashierName" name="name" type="String"/>
+      <ownedOperation xmi:id="scanItems" name="scanItems"/>
+      <ownedOperation xmi:id="submitTransaction" name="submitTransaction"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="Item" name="Item">
+      <ownedAttribute xmi:id="itemId" name="itemId" type="String"/>
+      <ownedAttribute xmi:id="itemName" name="name" type="String"/>
+      <ownedAttribute xmi:id="price" name="unitPrice" type="Real"/>
+      <ownedAttribute xmi:id="quantity" name="quantity" type="Integer"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="Bill" name="Bill">
+      <ownedAttribute xmi:id="billNo" name="billNumber" type="String"/>
+      <ownedAttribute xmi:id="billDate" name="date" type="String"/>
+      <ownedAttribute xmi:id="billTotal" name="totalAmount" type="Real"/>
+      <ownedAttribute xmi:id="billStatus" name="verificationStatus" type="String"/>
+      <ownedOperation xmi:id="calculateTotal" name="calculateTotal"/>
+      <ownedOperation xmi:id="verifyBillOp" name="verifyBill"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="Transaction" name="Transaction">
+      <ownedAttribute xmi:id="txnId" name="transactionId" type="String"/>
+      <ownedAttribute xmi:id="txnTime" name="transactionTime" type="String"/>
+      <ownedAttribute xmi:id="txnAmount" name="amount" type="Real"/>
+      <ownedAttribute xmi:id="txnStatus" name="status" type="String"/>
+      <ownedOperation xmi:id="processPayment" name="processPayment"/>
+      <ownedOperation xmi:id="updateStatus" name="updateStatus"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="AuthorizationService" name="CentralAuthorizationSystem">
+      <ownedAttribute xmi:id="serviceId" name="serviceId" type="String"/>
+      <ownedOperation xmi:id="authorizePayment" name="authorizePayment"/>
+      <ownedOperation xmi:id="sendResponse" name="sendResponse"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="Receipt" name="Receipt">
+      <ownedAttribute xmi:id="receiptNo" name="receiptNumber" type="String"/>
+      <ownedAttribute xmi:id="receiptDate" name="date" type="String"/>
+      <ownedAttribute xmi:id="receiptAmount" name="amount" type="Real"/>
+      <ownedOperation xmi:id="generateReceipt" name="generateReceipt"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="Delivery" name="Delivery">
+      <ownedAttribute xmi:id="deliveryId" name="deliveryId" type="String"/>
+      <ownedAttribute xmi:id="deliveryStatus" name="status" type="String"/>
+      <ownedOperation xmi:id="deliverItems" name="deliverItems"/>
+    </packagedElement>
+
+    <packagedElement xmi:type="uml:Association" xmi:id="C1" name="owns">
+      <ownedEnd xmi:id="C1a" name="cardholder" type="Customer" aggregation="composite"/>
+      <ownedEnd xmi:id="C1b" name="cards" type="CreditCard" upper="*"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="C2" name="contains">
+      <ownedEnd xmi:id="C2a" name="bill" type="Bill"/>
+      <ownedEnd xmi:id="C2b" name="items" type="Item" upper="*"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="C3" name="paidBy">
+      <ownedEnd xmi:id="C3a" name="bill" type="Bill"/>
+      <ownedEnd xmi:id="C3b" name="transaction" type="Transaction"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="C4" name="uses">
+      <ownedEnd xmi:id="C4a" name="transaction" type="Transaction"/>
+      <ownedEnd xmi:id="C4b" name="card" type="CreditCard"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="C5" name="authorizedThrough">
+      <ownedEnd xmi:id="C5a" name="transaction" type="Transaction"/>
+      <ownedEnd xmi:id="C5b" name="authorizationService" type="AuthorizationService"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="C6" name="generates">
+      <ownedEnd xmi:id="C6a" name="transaction" type="Transaction"/>
+      <ownedEnd xmi:id="C6b" name="receipt" type="Receipt"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="C7" name="fulfills">
+      <ownedEnd xmi:id="C7a" name="bill" type="Bill"/>
+      <ownedEnd xmi:id="C7b" name="delivery" type="Delivery"/>
+    </packagedElement>
+
+    <packagedElement xmi:type="uml:StateMachine" xmi:id="PaymentStateMachine" name="Credit Card Transaction States">
+      <region xmi:id="PaymentRegion" name="Main">
+        <subvertex xmi:type="uml:Pseudostate" xmi:id="InitialState" name="Initial" kind="initial"/>
+        <subvertex xmi:type="uml:State" xmi:id="ItemsSelected" name="Items Selected"/>
+        <subvertex xmi:type="uml:State" xmi:id="BillGenerated" name="Bill Generated"/>
+        <subvertex xmi:type="uml:State" xmi:id="CardPresented" name="Card Presented"/>
+        <subvertex xmi:type="uml:State" xmi:id="PendingAuth" name="Authorization Pending"/>
+        <subvertex xmi:type="uml:State" xmi:id="Authorized" name="Authorized"/>
+        <subvertex xmi:type="uml:State" xmi:id="Declined" name="Declined"/>
+        <subvertex xmi:type="uml:State" xmi:id="Paid" name="Payment Completed"/>
+        <subvertex xmi:type="uml:State" xmi:id="Delivered" name="Items Delivered"/>
+        <subvertex xmi:type="uml:FinalState" xmi:id="FinalState" name="Final"/>
+        <transition xmi:id="T0" source="InitialState" target="ItemsSelected" name="select items"/>
+        <transition xmi:id="T1" source="ItemsSelected" target="BillGenerated" name="calculate total"/>
+        <transition xmi:id="T2" source="BillGenerated" target="CardPresented" name="present card"/>
+        <transition xmi:id="T3" source="CardPresented" target="PendingAuth" name="submit transaction"/>
+        <transition xmi:id="T4" source="PendingAuth" target="Authorized" name="valid card and approved"/>
+        <transition xmi:id="T5" source="PendingAuth" target="Declined" name="invalid card or declined"/>
+        <transition xmi:id="T6" source="Authorized" target="Paid" name="record payment"/>
+        <transition xmi:id="T7" source="Paid" target="Delivered" name="verify bill and release items"/>
+        <transition xmi:id="T8" source="Delivered" target="FinalState" name="complete"/>
+        <transition xmi:id="T9" source="Declined" target="FinalState" name="notify cashier and stop"/>
+      </region>
+    </packagedElement>
+
+    <packagedElement xmi:type="uml:Activity" xmi:id="PurchaseActivity" name="Credit Card Purchase Activity">
+      <ownedNode xmi:type="uml:InitialNode" xmi:id="ActStart" name="Start"/>
+      <ownedNode xmi:type="uml:Action" xmi:id="SelectItems" name="Cardholder selects items"/>
+      <ownedNode xmi:type="uml:Action" xmi:id="ScanItems" name="Cashier scans items"/>
+      <ownedNode xmi:type="uml:Action" xmi:id="CreateBill" name="Generate bill and calculate total"/>
+      <ownedNode xmi:type="uml:Action" xmi:id="PresentCard" name="Cardholder presents credit card"/>
+      <ownedNode xmi:type="uml:Action" xmi:id="SubmitToCentral" name="Cashier submits card and bill details"/>
+      <ownedNode xmi:type="uml:Action" xmi:id="CheckCard" name="Central system validates card and checks authorization"/>
+      <ownedNode xmi:type="uml:DecisionNode" xmi:id="ApprovalDecision" name="Approved?"/>
+      <ownedNode xmi:type="uml:Action" xmi:id="Reject" name="Display decline and return card"/>
+      <ownedNode xmi:type="uml:Action" xmi:id="RecordPayment" name="Record payment and generate receipt"/>
+      <ownedNode xmi:type="uml:Action" xmi:id="VerifyBill" name="Verify bill against scanned items"/>
+      <ownedNode xmi:type="uml:Action" xmi:id="Deliver" name="Deliver items to cardholder"/>
+      <ownedNode xmi:type="uml:ActivityFinalNode" xmi:id="ActEnd" name="End"/>
+      <ownedEdge xmi:type="uml:ControlFlow" xmi:id="F0" source="ActStart" target="SelectItems"/>
+      <ownedEdge xmi:type="uml:ControlFlow" xmi:id="F1" source="SelectItems" target="ScanItems"/>
+      <ownedEdge xmi:type="uml:ControlFlow" xmi:id="F2" source="ScanItems" target="CreateBill"/>
+      <ownedEdge xmi:type="uml:ControlFlow" xmi:id="F3" source="CreateBill" target="PresentCard"/>
+      <ownedEdge xmi:type="uml:ControlFlow" xmi:id="F4" source="PresentCard" target="SubmitToCentral"/>
+      <ownedEdge xmi:type="uml:ControlFlow" xmi:id="F5" source="SubmitToCentral" target="CheckCard"/>
+      <ownedEdge xmi:type="uml:ControlFlow" xmi:id="F6" source="CheckCard" target="ApprovalDecision"/>
+      <ownedEdge xmi:type="uml:ControlFlow" xmi:id="F7" source="ApprovalDecision" target="Reject" name="No"/>
+      <ownedEdge xmi:type="uml:ControlFlow" xmi:id="F8" source="Reject" target="ActEnd"/>
+      <ownedEdge xmi:type="uml:ControlFlow" xmi:id="F9" source="ApprovalDecision" target="RecordPayment" name="Yes"/>
+      <ownedEdge xmi:type="uml:ControlFlow" xmi:id="F10" source="RecordPayment" target="VerifyBill"/>
+      <ownedEdge xmi:type="uml:ControlFlow" xmi:id="F11" source="VerifyBill" target="Deliver"/>
+      <ownedEdge xmi:type="uml:ControlFlow" xmi:id="F12" source="Deliver" target="ActEnd"/>
+    </packagedElement>
+
+    <packagedElement xmi:type="uml:Interaction" xmi:id="PurchaseSequence" name="Credit Card Purchase Sequence">
+      <lifeline xmi:id="L_Customer" name="cardholder"/>
+      <lifeline xmi:id="L_Cashier" name="cashier"/>
+      <lifeline xmi:id="L_POS" name="POS / Central System"/>
+      <lifeline xmi:id="L_Bank" name="issuing bank"/>
+      <lifeline xmi:id="L_Store" name="store inventory"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="O1" name="select items" covered="L_Customer"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="O2" name="scan items" covered="L_Cashier"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="O3" name="create bill" covered="L_POS"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="O4" name="present card" covered="L_Customer"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="O5" name="submit card and bill" covered="L_Cashier"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="O6" name="authorize request" covered="L_Bank"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="O7" name="approval or decline" covered="L_POS"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="O8" name="payment result" covered="L_Cashier"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="O9" name="verify bill" covered="L_POS"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="O10" name="release items" covered="L_Store"/>
+      <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="O11" name="deliver items and receipt" covered="L_Customer"/>
+      <message xmi:id="M1" name="chooseItems" messageSort="synchCall" sendEvent="O1" receiveEvent="O2"/>
+      <message xmi:id="M2" name="scanItems" messageSort="synchCall" sendEvent="O2" receiveEvent="O3"/>
+      <message xmi:id="M3" name="presentCard" messageSort="synchCall" sendEvent="O4" receiveEvent="O5"/>
+      <message xmi:id="M4" name="authorizationRequest" messageSort="synchCall" sendEvent="O5" receiveEvent="O6"/>
+      <message xmi:id="M5" name="authorizationResponse" messageSort="reply" sendEvent="O6" receiveEvent="O7"/>
+      <message xmi:id="M6" name="showResult" messageSort="synchCall" sendEvent="O7" receiveEvent="O8"/>
+      <message xmi:id="M7" name="verifyBill" messageSort="synchCall" sendEvent="O8" receiveEvent="O9"/>
+      <message xmi:id="M8" name="releaseGoods" messageSort="synchCall" sendEvent="O9" receiveEvent="O10"/>
+      <message xmi:id="M9" name="deliverGoods" messageSort="synchCall" sendEvent="O10" receiveEvent="O11"/>
+    </packagedElement>
+  </uml:Model>
+</xmi:XMI>
